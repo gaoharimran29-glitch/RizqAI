@@ -5,7 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
-
+backend/.env
 # Distribution / packaging
 .Python
 build/
@@ -32,6 +32,9 @@ MANIFEST
 *.manifest
 *.spec
 
+
+
+backend/.env
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
