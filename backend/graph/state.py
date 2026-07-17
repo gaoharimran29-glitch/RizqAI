@@ -1,12 +1,11 @@
 from typing import TypedDict, Any
 
-from schemas.planner import PlannerOutput
-
+from schemas.planner_state import PlannerState
 
 class GraphState(TypedDict):
     user_query: str
 
-    plan: PlannerOutput | None
+    plan: PlannerState | None
 
     research: dict[str, Any]
 
