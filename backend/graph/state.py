@@ -1,10 +1,12 @@
-from typing import Any, TypedDict
+from typing import TypedDict, Any
+
+from schemas.planner import PlannerOutput
 
 
 class GraphState(TypedDict):
     user_query: str
 
-    plan: dict[str, Any]
+    plan: PlannerOutput | None
 
     research: dict[str, Any]
 
@@ -14,6 +16,6 @@ class GraphState(TypedDict):
 
     thesis: dict[str, Any]
 
-    memories: list
+    memories: list[dict[str, Any]]
 
     approval: bool
