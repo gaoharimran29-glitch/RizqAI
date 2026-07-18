@@ -1,21 +1,29 @@
-from config import llm
-from graph.state import GraphState
-from prompts.prompts import PLANNER_PROMPT
-from schemas.planner_state import PlannerState
+from backend.config import llm
+from backend.graph.state import GraphState
+from backend.prompts.prompts import PLANNER_PROMPT
+from backend.schemas.planner_state import PlannerState
+from langchain_core.prompts import ChatPromptTemplate
+from langsmith import traceable
 
-planner_llm = llm.with_structured_output(PlannerState)
+@traceable(name="planner_agent")
+async def planner_agent(state: GraphState) -> GraphState:
+    """Planner Agent classify the user intent and plan the agents to run"""
 
-def planner_agent(state: GraphState) -> GraphState:
-    """Planner Agent"""
+    print("Planner agent Working....")
 
-    query = state["user_query"]
+    try:
+        planner_llm = llm.with_structured_output(PlannerState)
+        prompt = ChatPromptTemplate.from_messages([("system", PLANNER_PROMPT) , ("human" , "{user_query}")])
+        messages = await prompt.ainvoke({"user_query": state["user_query"]})
+        plan = await planner_llm.ainvoke(messages)
 
-    plan = planner_llm.invoke(
-        PLANNER_PROMPT.format(
-            query=query
-        )
-    )
+    except Exception as e:
+        return {
+            "success": False ,
+            "error" : str(e)
+        }
 
-    state["plan"] = plan
-
-    return state
+    return {
+        "success": True ,
+        "plan" : plan
+    }
