@@ -1,24 +1,12 @@
 from langgraph.graph import START, END, StateGraph
-
 from graph.state import GraphState
-
 from agents.planner_agent import planner_agent
 
+graph_builder = StateGraph(GraphState)
 
-def build_graph():
+graph_builder.add_node("planner_agent", planner_agent)
 
-    graph_builder = StateGraph(GraphState)
+graph_builder.add_edge(START, "planner_agent")
+graph_builder.add_edge("planner_agent", END)
 
-    # Register Nodes
-    graph_builder.add_node("planner", planner_agent)
-
-    # Entry Point
-    graph_builder.add_edge(START, "planner")
-
-    # Temporary End
-    graph_builder.add_edge("planner", END)
-
-    return graph_builder.compile()
-
-
-graph = build_graph()
+graph_builder.compile()
