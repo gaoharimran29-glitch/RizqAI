@@ -1,6 +1,6 @@
+from enum import Enum
 from typing import List
 from pydantic import BaseModel, Field
-from enum import Enum
 class Intent(str, Enum):
     STOCK_ANALYSIS = "stock_analysis"
     STOCK_PRICE = "stock_price"
@@ -11,10 +11,13 @@ class Intent(str, Enum):
     STOCK_COMPARISON = "stock_comparison"
     GENERAL_QUESTION = "general_question"
     UNRELATED = "unrelated"
+class Agent(str, Enum):
+    RESEARCH = "research_agent"
+    RISK = "risk_agent"
+    DEBATE = "debate_agent"
+    THESIS = "thesis_agent"
 
 class PlannerState(BaseModel):
-    """Structured output returned by the Planner Agent."""
-
     intent: Intent = Field(description="Classified intent of the user's query.")
-    company: str | None = Field(default=None, description="The company or stock symbol if present.")
-    tasks: List[str] = Field(description="List of agent names to execute.")
+    companies: List[str] = Field(default_factory=list, description="Companies or stock symbols mentioned by the user.")
+    tasks: List[Agent] = Field(description="Agents that should be executed.")
