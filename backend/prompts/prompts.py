@@ -91,7 +91,4 @@ Return an empty task list.
 
 Return the response using the required structured output.
 
-User Query:
-
-{query}
 """
